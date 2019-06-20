@@ -1,0 +1,20 @@
+Data Parallel Reduction
+
+1.  How many times does your thread block synchronize to reduce its portion
+    of an array to a single value?
+    The thread block synchronizes once per stride and since there are log2(n) strides for n = block_size
+    elements, the synchronization happens log2(n) times plus one extra time after loading the shared memory elements.
+    For a thread block of size 256, it would be 9 times.
+
+
+2.  What is the minimum, maximum, and average number of "real" operations
+    that a thread will perform? "Real" operations are those that directly
+    contribute to the final reduction value, i.e., iterations of the reduction
+    computation.
+    Minimum number of real operations would be one, that half the thread block would perform.
+    Maximum number would be log2(n) where n is the block size, that the first thread would perform.
+    Average number would be sum(i/2^i) over i from 1 to log2(n)
+
+
+Atomic Add - 34.522075X
+Recursive Reduction  - 30.107447X
